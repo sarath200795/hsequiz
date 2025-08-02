@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Quiz Results</h1>
+    </header>
+    <main>
+        <h2>Your Score: <span id="score"></span></h2>
+
+        <div id="save-score-section">
+            <input type="text" id="username" placeholder="Enter your name" />
+            <button id="save-score-btn">Save Score</button>
+        </div>
+
+        <button onclick="window.location.href='index.html'">Play Again</button>
+        <button onclick="window.location.href='leaderboard.html'">View Leaderboard</button>
+    </main>
+
+    <script>
+        const score = localStorage.getItem("quizScore");
+        const category = localStorage.getItem("quizCategory");
+        document.getElementById("score").textContent = score;
+
+        document.getElementById("save-score-btn").addEventListener("click", () => {
+            const username = document.getElementById("username").value.trim();
+            if (!username) return alert("Please enter your name!");
+
+            let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || {};
+            if (!leaderboard[category]) leaderboard[category] = [];
+
+            leaderboard[category].push({ name: username, score });
+            leaderboard[category].sort((a, b) => parseInt(b.score) - parseInt(a.score)); // Sort high to low
+
+            localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+            alert("Score saved!");
+        });
+    </script>
+</body>
+</html>

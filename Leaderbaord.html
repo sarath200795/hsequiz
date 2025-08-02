@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Leaderboard</h1>
+    </header>
+    <main>
+        <div id="leaderboard-container"></div>
+        <button onclick="window.location.href='index.html'">Back to Home</button>
+    </main>
+
+    <script>
+        const leaderboardContainer = document.getElementById("leaderboard-container");
+        const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+        function displayLeaderboard() {
+            leaderboardContainer.innerHTML = "";
+            for (let category in leaderboard) {
+                const section = document.createElement("section");
+                section.innerHTML = `<h2>${category.toUpperCase()} Quiz</h2>`;
+                
+                const list = document.createElement("ol");
+                leaderboard[category].slice(0, 10).forEach(entry => {
+                    const li = document.createElement("li");
+                    li.textContent = `${entry.name} - ${entry.score}`;
+                    list.appendChild(li);
+                });
+
+                section.appendChild(list);
+                leaderboardContainer.appendChild(section);
+            }
+        }
+
+        displayLeaderboard();
+    </script>
+</body>
+</html>
